@@ -54,6 +54,7 @@ class ariDaily {
     const headers = {
       accept: "*/*",
       "content-type": "application/x-www-form-urlencoded",
+      host: "arichain.io",
     };
     const data = qs.stringify({ address });
     const response = await this.makeRequest(
@@ -197,6 +198,7 @@ class ariDaily {
 
   async singleProses(email, address, isManualMode, manualAnswerIdx) {
     const dataAccount = await this.getDataAccount(email);
+    const coba = dataAccount[0].account;
     if (dataAccount) {
       logMessage(
         this.currentNum,
@@ -205,11 +207,11 @@ class ariDaily {
         "process"
       );
     }
-    const checkin = await this.checkinDaily(address);
+    const checkin = await this.checkinDaily(coba);
     if (checkin) {
       logMessage(this.currentNum, this.total, "Checkin succesfully", "success");
     }
-    const quizData = await this.getQuestion(address);
+    const quizData = await this.getQuestion(coba);
     if (!quizData) {
       logMessage(
         this.currentNum,
@@ -225,11 +227,7 @@ class ariDaily {
       manualAnswerIdx
     );
 
-    const quizResponse = await this.answerQuestion(
-      address,
-      answerIdx,
-      quiz_idx
-    );
+    const quizResponse = await this.answerQuestion(coba, answerIdx, quiz_idx);
     if (quizResponse) {
       logMessage(
         this.currentNum,
